@@ -1,0 +1,28 @@
+{
+  "entries": [
+    "./components/discord-action-row/discord-action-row.js",
+    "./components/discord-attachment/discord-attachment.js",
+    "./components/discord-attachments/discord-attachments.js",
+    "./components/discord-button/discord-button.js",
+    "./components/discord-command/discord-command.js",
+    "./components/discord-embed/discord-embed.js",
+    "./components/discord-embed-field/discord-embed-field.js",
+    "./components/discord-embed-fields/discord-embed-fields.js",
+    "./components/discord-invite/discord-invite.js",
+    "./components/discord-mention/discord-mention.js",
+    "./components/discord-message/discord-message.js",
+    "./components/discord-messages/discord-messages.js",
+    "./components/discord-reaction/discord-reaction.js",
+    "./components/discord-reactions/discord-reactions.js",
+    "./components/discord-reply/discord-reply.js",
+    "./components/discord-system-message/discord-system-message.js",
+    "./components/discord-tenor-video/discord-tenor-video.js"
+  ],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "2.8.0",
+    "typescriptVersion": "4.2.3"
+  },
+  "collections": [],
+  "bundles": []
+}
