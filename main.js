@@ -2,37 +2,42 @@ import { createMessage } from 'discord-components-core';
 
 const app = document.getElementById('app');
 
-const messages = [
-    {
-        author: {
-            username: 'User1',
-            avatar: 'https://example.com/avatar1.png',
-        },
-        content: 'Hello!',
-        attachments: [
-            {
-                url: 'https://example.com/image.png',
-                type: 'image'
-            }
-        ]
-    },
-    {
-        author: {
-            username: 'User2',
-            avatar: 'https://example.com/avatar2.png',
-        },
-        content: 'Here is a file!',
-        attachments: [
-            {
-                url: 'https://example.com/document.pdf',
-                type: 'file',
-                name: 'document.pdf'
-            }
-        ]
-    }
-];
+// Extract the URL parameter
+const urlParams = new URLSearchParams(window.location.search);
+const transcriptUrl = urlParams.get('url');
 
-messages.forEach(message => {
-    const messageElement = createMessage(message);
-    app.appendChild(messageElement);
-});
+if (transcriptUrl) {
+    fetch(transcriptUrl)
+        .then(response => response.text())
+        .then(data => {
+            // Assuming the data is in HTML format, you need to parse it accordingly
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            
+            // Assuming messages are structured in a specific format in the HTML
+            const messages = Array.from(doc.querySelectorAll('.message')); 
+            messages.forEach(messageElement => {
+                const message = {
+                    author: {
+                        username: messageElement.querySelector('.username').textContent,
+                        avatar: messageElement.querySelector('.avatar').src,
+                    },
+                    content: messageElement.querySelector('.content').innerHTML,
+                    attachments: Array.from(messageElement.querySelectorAll('.attachment')).map(attachment => ({
+                        url: attachment.href,
+                        type: attachment.dataset.type,
+                        name: attachment.textContent
+                    }))
+                };
+                const messageElement = createMessage(message);
+                app.appendChild(messageElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching the transcript:', error);
+            app.innerHTML = '<p>Failed to load transcript.</p>';
+        });
+} else {
+    app.innerHTML = '<p>No transcript URL provided.</p>';
+}
+
